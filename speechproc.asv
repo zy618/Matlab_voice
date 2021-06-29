@@ -5,10 +5,6 @@ function speechproc()
     WL = 240;               % 窗长
     P = 10;                 % 预测系数个数
     s = readspeech('voice.pcm',100000);             % 载入语音s
-    figure(1);
-    subplot(2,1,1);
-    plot(s);
-    xlabel('origin');
     L = length(s);          % 读入语音长度
     FN = floor(L/FL)-2;     % 计算帧数
     % 预测和重建滤波器
@@ -63,7 +59,7 @@ function speechproc()
         exc_syn_tmp = double((mod(tmp, PT) == 0));
         s_syn_tmp = filter(1, A, exc_syn_tmp);
         s_syn_tmp = G * s_syn_tmp;
-
+        
         exc_syn((n-1)*FL+1:n*FL) = exc_syn_tmp; % 将你计算得到的合成激励写在这里
         s_syn((n-1)*FL+1:n*FL) = s_syn_tmp; % 将你计算得到的合成语音写在这里
 
@@ -86,13 +82,14 @@ function speechproc()
     % sound(s);
     % sound(exc);
     % sound(s_rec);
-    % sound(exc_syn);
-    % figure(1);
-    % stem(exc_syn);
+    sound(exc_syn);
+    figure(1);
+    stem(exc_syn);
     sound(s_syn);
-    subplot(2,1,2);
-    plot(s_syn);
-    xlabel('synthesis');
+    figure(2);
+    stem(s_syn);
+    subplot(1,2,2);
+    stem(s);
     
 
     % 保存所有文件
