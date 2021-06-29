@@ -47,12 +47,7 @@ function speechproc()
         % (5) 在此位置写程序，用filter函数和exc重建语音，注意保持滤波器状态
         [s_rec_tmp, zi_rec] = filter(1, A, exc_tmp, zi_rec);
         s_rec((n-1)*FL+1:n*FL) = s_rec_tmp; % 将你计算得到的重建语音写在这里
-        % figure(1);
-        % subplot(1, 2, 1);
-        % plot(s_rec_tmp);
-        % subplot(1, 2, 2);
-        % plot(s_f);
-
+        
         % 注意下面只有在得到exc后才会计算正确
         s_Pitch = exc(n*FL-222:n*FL);
         PT = findpitch(s_Pitch);    % 计算基音周期PT（不要求掌握）
@@ -82,6 +77,8 @@ function speechproc()
 
     % (6) 在此位置写程序，听一听 s ，exc 和 s_rec 有何区别，解释这种区别
     sound(s);
+    sound(exc);
+    sound(s_rec);
     
 
     % 保存所有文件
