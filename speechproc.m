@@ -25,6 +25,7 @@ function speechproc()
     % 变速不变调滤波器（假设速度减慢一倍）
     exc_syn_v = zeros(2*L,1);   % 合成的激励信号（脉冲串）
     s_syn_v = zeros(2*L,1);     % 合成语音
+    FL_v = 2 * FL; 
 
     hw = hamming(WL);       % 汉明窗
     
@@ -59,20 +60,24 @@ function speechproc()
 
         
         % (10) 在此位置写程序，生成合成激励，并用激励和filter函数产生合成语音
-        tmp = 0: (FL - 1);
-        exc_syn_tmp = double((mod(tmp, PT) == 0));
-        s_syn_tmp = filter(1, A, exc_syn_tmp);
-        s_syn_tmp = G * s_syn_tmp;
+        % tmp = 0: (FL - 1);
+        % exc_syn_tmp = double((mod(tmp, PT) == 0));
+        % s_syn_tmp = filter(1, A, exc_syn_tmp);
+        % s_syn_tmp = G * s_syn_tmp;
 
-        exc_syn((n-1)*FL+1:n*FL) = exc_syn_tmp; % 将你计算得到的合成激励写在这里
-        s_syn((n-1)*FL+1:n*FL) = s_syn_tmp; % 将你计算得到的合成语音写在这里
+        % exc_syn((n-1)*FL+1:n*FL) = exc_syn_tmp; % 将你计算得到的合成激励写在这里
+        % s_syn((n-1)*FL+1:n*FL) = s_syn_tmp; % 将你计算得到的合成语音写在这里
 
         % (11) 不改变基音周期和预测系数，将合成激励的长度增加一倍，再作为filter
         % 的输入得到新的合成语音，听一听是不是速度变慢了，但音调没有变。
+        tmp = 0: (FL_v - 1);
+        exc_syn_v_tmp = double((mod(tmp, PT) == 0));
+        s_syn_v_tmp = filter(1, A, exc_syn_v_tmp);
+        s_syn_v_tmp = G * s_syn_v_tmp;
 
-        
-        % exc_syn_v((n-1)*FL_v+1:n*FL_v) = ... 将你计算得到的加长合成激励写在这里
-        % s_syn_v((n-1)*FL_v+1:n*FL_v) = ...   将你计算得到的加长合成语音写在这里
+        exc_syn_v((n-1)*FL_v+1:n*FL_v) = exc_syn_v_tmp; % 将你计算得到的加长合成激励写在这里
+        s_syn_v((n-1)*FL_v+1:n*FL_v) = s_syn_v_tmp;  % 将你计算得到的加长合成语音写在这里
+
         
         % (13) 将基音周期减小一半，将共振峰频率增加150Hz，重新合成语音，听听是啥感受～
 
@@ -83,16 +88,17 @@ function speechproc()
     end
 
     % (6) 在此位置写程序，听一听 s ，exc 和 s_rec 有何区别，解释这种区别
-    % sound(s);
+    sound(s);
     % sound(exc);
     % sound(s_rec);
     % sound(exc_syn);
     % figure(1);
     % stem(exc_syn);
-    sound(s_syn);
+    % sound(s_syn);
     subplot(2,1,2);
-    plot(s_syn);
-    xlabel('synthesis');
+    plot(s_syn_v);
+    xlabel('v-synthesis');
+    sound(s_syn_v);
     
 
     % 保存所有文件
