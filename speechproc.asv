@@ -91,7 +91,7 @@ function speechproc()
         tmp = 0: (FL - 1);
         exc_syn_t_tmp = double( (mode(tmp, floor(PT/2)) == 0) );
         s_syn_t_tmp = filter(1, A_rot, exc_syn_t_tmp);
-        s_syn_t_tmp = 2 * G * s_syn_t_tmp;
+        s_syn_t_tmp = G * s_syn_t_tmp;
 
         exc_syn_t((n-1)*FL+1:n*FL) = exc_syn_t_tmp; % 将你计算得到的变调合成激励写在这里
         s_syn_t((n-1)*FL+1:n*FL) = s_syn_t_tmp; % 将你计算得到的变调合成语音写在这里

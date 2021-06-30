@@ -13,7 +13,7 @@ denominator = [1, -a1, -a2];
 
 % frequency response
 % figure(2);
-% freqz(numerator, denominator, 200)
+freqz(numerator, denominator, 200)
 
 % impulse response by impz function
 % figure(3);
@@ -30,9 +30,9 @@ denominator = [1, -a1, -a2];
 % ylabel('h');
 
 % No.9
-h_sample_variation = filter(numerator, denominator, s_sample_variation);
-sound(h_sample_variation, 8000);
-stem(h_sample_variation);
+% h_sample_variation = filter(numerator, denominator, s_sample_variation);
+% sound(h_sample_variation, 8000);
+% stem(h_sample_variation);
 
 
 
